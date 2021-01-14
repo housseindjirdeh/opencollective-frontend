@@ -1,6 +1,7 @@
 import React, { Fragment, useRef } from 'react';
 import { PropTypes } from 'prop-types';
 import { DotsVerticalRounded } from '@styled-icons/boxicons-regular/DotsVerticalRounded';
+import { Envelope } from '@styled-icons/boxicons-regular/Envelope';
 import { Planet } from '@styled-icons/boxicons-regular/Planet';
 import { Receipt } from '@styled-icons/boxicons-regular/Receipt';
 import { Settings } from '@styled-icons/feather/Settings';
@@ -8,7 +9,7 @@ import { Close } from '@styled-icons/material/Close';
 import { Dashboard } from '@styled-icons/material/Dashboard';
 import { Stack } from '@styled-icons/remix-line/Stack';
 import themeGet from '@styled-system/theme-get';
-import { get } from 'lodash';
+import { get, pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { FormattedMessage, useIntl } from 'react-intl';
 import styled, { css } from 'styled-components';
@@ -214,7 +215,7 @@ const ExpandMenuIcon = styled(DotsVerticalRounded).attrs({ size: 28 })`
   cursor: pointer;
   margin-right: 4px;
   flex: 0 0 28px;
-  color: #304cdc;
+  color: ${themeGet('colors.primary.500')};
 
   @media (min-width: 64em) {
     display: none;
@@ -255,8 +256,8 @@ const CloseMenuIcon = styled(Close).attrs({ size: 28 })`
   cursor: pointer;
   margin-right: 4px;
   flex: 0 0 28px;
-  color: #304cdc;
-  background: radial-gradient(rgba(72, 95, 211, 0.1) 14px, transparent 3px);
+  color: ${themeGet('colors.primary.600')};
+  background: radial-gradient(${themeGet('colors.primary.100')} 14px, transparent 3px);
 
   @media (min-width: 64em) {
     display: none;
@@ -317,7 +318,7 @@ const getDefaultCallsToActions = (collective, isAdmin, newNavbarFeatureFlag) => 
  * This code could be factorized with `ActionsMenu.js`, as we want to have the same icons/actions/labels
  * here and there.
  */
-export const getMainAction = (collective, isAdmin, callsToAction) => {
+const getMainAction = (collective, isAdmin, callsToAction) => {
   if (!collective || !callsToAction) {
     return null;
   }
@@ -395,11 +396,11 @@ export const getMainAction = (collective, isAdmin, callsToAction) => {
     return {
       type: NAVBAR_ACTION_TYPE.CONTACT,
       component: (
-        <Link route="host.dashboard" params={{ hostCollectiveSlug: collective.slug }}>
+        <Link route="collective-contact" params={{ collectiveSlug: collective.slug }}>
           <MainActionBtn tabIndex="-1">
-            <Dashboard size="20px" />
+            <Envelope size="20px" />
             <Span ml={2}>
-              <FormattedMessage id="host.dashboard" defaultMessage="Dashboard" />
+              <FormattedMessage id="Contact" defaultMessage="Contact" />
             </Span>
           </MainActionBtn>
         </Link>
@@ -416,18 +417,18 @@ export const MainActionBtn = styled(StyledButton).attrs({ buttonSize: 'tiny' })`
   line-height: 16px;
   padding: 5px 10px;
   text-transform: uppercase;
-  background: rgba(72, 95, 211, 0.1);
+  background: ${themeGet('colors.primary.100')};
   border-radius: 8px;
   border: none;
-  color: #304cdc;
+  color: ${themeGet('colors.primary.600')};
 
   &:hover {
-    background: rgba(72, 95, 211, 0.12);
+    background: ${themeGet('colors.primary.200')};
   }
 
   &:active {
-    background: rgba(72, 95, 211, 0.2);
-    color: #304cdc;
+    background: ${themeGet('colors.primary.200')};
+    color: ${themeGet('colors.primary.700')};
   }
 
   span {
@@ -586,6 +587,7 @@ const CollectiveNavbar = ({
                 collective={collective}
                 callsToAction={callsToAction}
                 hiddenActionForNonMobile={mainAction?.type}
+                mainAction={Object.values(pick(mainAction, 'type'))}
               />
             )}
             {!onlyInfos && (
