@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FocusTrap from 'focus-trap-react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Container from './Container';
@@ -52,40 +53,43 @@ const ConfirmationModal = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Modal width="570px" show={show} onClose={onClose} {...props}>
+    <Modal role="alertdialog" width="570px" show={show} onClose={onClose} {...props}>
       <ModalHeader onClose={onClose}>{header}</ModalHeader>
       <ModalBody pt={2}>{children || <P>{body}</P>}</ModalBody>
       <ModalFooter>
-        <Container display="flex" justifyContent={['center', 'flex-end']} flexWrap="Wrap">
-          <StyledButton
-            mx={20}
-            my={1}
-            minWidth={140}
-            onClick={cancelHandler || onClose}
-            disabled={submitting}
-            data-cy="confirmation-modal-cancel"
-          >
-            {cancelLabel || formatMessage(messages.cancel)}
-          </StyledButton>
-          <StyledButton
-            my={1}
-            minWidth={140}
-            buttonStyle={isDanger ? 'danger' : isSuccess ? 'success' : 'primary'}
-            data-cy="confirmation-modal-continue"
-            loading={submitting}
-            onClick={async () => {
-              try {
-                setSubmitting(true);
-                await continueHandler();
-              } catch (e) {
-                setSubmitting(false);
-                throw e;
-              }
-            }}
-          >
-            {continueLabel || formatMessage(confirmBtnMsgs[type])}
-          </StyledButton>
-        </Container>
+        <FocusTrap focusTrapOptions={{ clickOutsideDeactivates: true }}>
+          <Container display="flex" justifyContent={['center', 'flex-end']} flexWrap="Wrap">
+            <StyledButton
+              mx={20}
+              my={1}
+              autoFocus
+              minWidth={140}
+              onClick={cancelHandler || onClose}
+              disabled={submitting}
+              data-cy="confirmation-modal-cancel"
+            >
+              {cancelLabel || formatMessage(messages.cancel)}
+            </StyledButton>
+            <StyledButton
+              my={1}
+              minWidth={140}
+              buttonStyle={isDanger ? 'danger' : isSuccess ? 'success' : 'primary'}
+              data-cy="confirmation-modal-continue"
+              loading={submitting}
+              onClick={async () => {
+                try {
+                  setSubmitting(true);
+                  await continueHandler();
+                } catch (e) {
+                  setSubmitting(false);
+                  throw e;
+                }
+              }}
+            >
+              {continueLabel || formatMessage(confirmBtnMsgs[type])}
+            </StyledButton>
+          </Container>
+        </FocusTrap>
       </ModalFooter>
     </Modal>
   );

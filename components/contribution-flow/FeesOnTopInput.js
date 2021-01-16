@@ -5,12 +5,11 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
 import INTERVALS from '../../lib/constants/intervals';
-import { formatCurrency } from '../../lib/currency-utils';
 
 import { Flex } from '../Grid';
 import StyledInputAmount from '../StyledInputAmount';
 import StyledSelect from '../StyledSelect';
-import { P, Span } from '../Text';
+import { P } from '../Text';
 
 import illustration from './fees-on-top-illustration.png';
 
@@ -27,11 +26,7 @@ const getOptionFromPercentage = (amount, currency, percentage) => {
     // Value must be unique, so we set a special key if feeAmount is 0
     value: feeAmount || `${percentage}%`,
     percentage,
-    label: (
-      <span>
-        {formatCurrency(feeAmount, currency)} <Span color="black.500">({percentage * 100}%)</Span>
-      </span>
-    ),
+    label: `${feeAmount / 100} ${currency} (${percentage * 100}%)`,
   };
 };
 
@@ -41,11 +36,11 @@ const getOptions = (amount, currency) => {
       return getOptionFromPercentage(amount, currency, percentage);
     }),
     {
-      label: <FormattedMessage id="NoThankYou" defaultMessage="No, thank you" />,
+      label: 'No, thank you',
       value: 0,
     },
     {
-      label: <FormattedMessage id="platformFee.Other" defaultMessage="Other" />,
+      label: 'Other',
       value: 'CUSTOM',
     },
   ];
@@ -96,6 +91,7 @@ const FeesOnTopInput = ({ currency, amount, fees, onChange }) => {
           </P>
         </Flex>
         <StyledSelect
+          aria-label="Donation percentage"
           width="100%"
           maxWidth={['100%', 190]}
           mt={[2, 0]}
