@@ -15,16 +15,25 @@ import StyledLink from '../StyledLink';
 import aboutNavbarIcon from '../../public/static/images/collective-navigation/CollectiveNavbarIconAbout.png';
 import budgetNavbarIcon from '../../public/static/images/collective-navigation/CollectiveNavbarIconBudget.png';
 import connectNavbarIcon from '../../public/static/images/collective-navigation/CollectiveNavbarIconConnect.png';
-import contributeNavbarIcon from '../../public/static/images/collective-navigation/CollectiveNavbarIconContribute.png';
+import contributeNavbarIcon from '../../public/static/images/collective-navigation/CollectiveNavbarIconContributeSVG.svg';
 import eventsNavbarIcon from '../../public/static/images/collective-navigation/CollectiveNavbarIconEvents.png';
 
+// const CATEGORY_ICON = {
+//   ABOUT: aboutNavbarIcon,
+//   BUDGET: budgetNavbarIcon,
+//   CONNECT: connectNavbarIcon,
+//   CONTRIBUTE: contributeNavbarIcon,
+//   CONTRIBUTIONS: contributeNavbarIcon,
+//   EVENTS: eventsNavbarIcon,
+// };
+
 const CATEGORY_ICON = {
-  ABOUT: aboutNavbarIcon,
-  BUDGET: budgetNavbarIcon,
-  CONNECT: connectNavbarIcon,
+  ABOUT: contributeNavbarIcon,
+  BUDGET: contributeNavbarIcon,
+  CONNECT: contributeNavbarIcon,
   CONTRIBUTE: contributeNavbarIcon,
   CONTRIBUTIONS: contributeNavbarIcon,
-  EVENTS: eventsNavbarIcon,
+  EVENTS: contributeNavbarIcon,
 };
 
 const IconIllustration = styled.img.attrs({ alt: '' })`
