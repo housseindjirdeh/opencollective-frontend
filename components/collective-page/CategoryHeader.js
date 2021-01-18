@@ -14,12 +14,8 @@ import StyledTooltip from '../StyledTooltip';
 import { P } from '../Text';
 
 import { Dimensions } from './_constants';
+import { AboutSVG, BudgetSVG, ConnectSVG, ContributeSVG } from './NavbarSVGIcons';
 import SectionTitle from './SectionTitle';
-
-import aboutSectionHeaderIcon from '../../public/static/images/collective-navigation/CollectiveSectionHeaderIconAbout.png';
-import budgetSectionHeaderIcon from '../../public/static/images/collective-navigation/CollectiveSectionHeaderIconBudget.png';
-import connectSectionHeaderIcon from '../../public/static/images/collective-navigation/CollectiveSectionHeaderIconConnect.png';
-import contributeSectionHeaderIcon from '../../public/static/images/collective-navigation/CollectiveSectionHeaderIconContribute.png';
 
 const ContainerWithMaxWidth = styled(Container).attrs({
   maxWidth: Dimensions.MAX_SECTION_WIDTH,
@@ -31,21 +27,27 @@ const ContainerWithMaxWidth = styled(Container).attrs({
   padding-top: 64px;
 `;
 
-const TypeIllustration = styled.img.attrs({ alt: '' })`
-  width: 48px;
-  height: 48px;
+const SVGContainer = styled(Flex)`
+  svg {
+    width: 48px;
+    height: 48px;
+  }
+  // make dot in SVG icons change color
+  circle {
+    fill: ${props => props.theme.colors.primary[600]};
+  }
 `;
 
 const getCategoryData = (intl, collective, category) => {
   switch (category) {
     case NAVBAR_CATEGORIES.ABOUT:
       return {
-        img: aboutSectionHeaderIcon,
+        svg: <AboutSVG />,
         title: i18nNavbarCategory(intl, category),
       };
     case NAVBAR_CATEGORIES.BUDGET:
       return {
-        img: budgetSectionHeaderIcon,
+        svg: <BudgetSVG />,
         title: i18nNavbarCategory(intl, category),
         subtitle: (
           <FormattedMessage
@@ -63,7 +65,7 @@ const getCategoryData = (intl, collective, category) => {
       };
     case NAVBAR_CATEGORIES.CONNECT:
       return {
-        img: connectSectionHeaderIcon,
+        svg: <ConnectSVG />,
         title: i18nNavbarCategory(intl, category),
         subtitle: <FormattedMessage id="section.connect.subtitle" defaultMessage="Let’s get the ball rolling!" />,
         info: (
@@ -75,7 +77,7 @@ const getCategoryData = (intl, collective, category) => {
       };
     case NAVBAR_CATEGORIES.CONTRIBUTE:
       return {
-        img: contributeSectionHeaderIcon,
+        svg: <ContributeSVG />,
         title: i18nNavbarCategory(intl, category),
         subtitle: (
           <FormattedMessage
@@ -93,7 +95,7 @@ const getCategoryData = (intl, collective, category) => {
       };
     case NAVBAR_CATEGORIES.CONTRIBUTIONS:
       return {
-        img: contributeSectionHeaderIcon,
+        svg: <ContributeSVG />,
         title: i18nNavbarCategory(intl, category),
         subtitle: (
           <FormattedMessage
@@ -117,9 +119,9 @@ const CategoryHeader = React.forwardRef(({ collective, category, isAdmin, ...pro
   return (
     <ContainerWithMaxWidth ref={ref} {...props}>
       <Flex alignItems="center" justifyContent="center">
-        <Flex alignItems="center" mr={2}>
-          <TypeIllustration src={data.img} />
-        </Flex>
+        <SVGContainer alignItems="center" mr={2}>
+          {data.svg}
+        </SVGContainer>
         <Flex alignItems="center" mr={3}>
           <SectionTitle mr={2} my={3} data-cy={`category-${category}-title`}>
             {data.title}
