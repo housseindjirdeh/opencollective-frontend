@@ -241,6 +241,7 @@ class ExpensePage extends React.Component {
                       host={data.account?.isHost ? data.account : data.account?.host}
                       expenses={data.expenses?.nodes}
                       nbPlaceholders={data.variables.limit}
+                      totalAmount={data.expenses?.totalAmount}
                     />
                     <Flex mt={5} justifyContent="center">
                       <Pagination
@@ -383,6 +384,7 @@ const expensesPageQuery = gqlV2/* GraphQL */ `
       searchTerm: $searchTerm
     ) {
       totalCount
+      totalAmount
       offset
       limit
       nodes {

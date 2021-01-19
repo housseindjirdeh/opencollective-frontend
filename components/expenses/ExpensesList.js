@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-
 import ExpenseBudgetItem from '../budget/ExpenseBudgetItem';
 import StyledCard from '../StyledCard';
+import FormattedMoneyAmount from '../FormattedMoneyAmount';
+import { Span } from '../Text';
+import { Flex } from '../Grid';
+import { FormattedMessage } from 'react-intl';
 
 const ExpenseContainer = styled.div`
   ${props =>
@@ -11,6 +14,16 @@ const ExpenseContainer = styled.div`
     css`
       border-top: 1px solid #e6e8eb;
     `}
+`;
+
+const FooterContainer = styled.div`
+  padding: 16px 27px;
+  border-top: 1px solid #e6e8eb;
+`;
+
+const FooterLabel = styled.span`
+  font-size: 15px;
+  margin-right: 5px;
 `;
 
 const ExpensesList = ({
@@ -24,6 +37,7 @@ const ExpensesList = ({
   view,
   onDelete,
   onProcess,
+  totalAmount,
 }) => {
   expenses = !isLoading ? expenses : [...new Array(nbPlaceholders)];
 
@@ -49,6 +63,20 @@ const ExpensesList = ({
           />
         </ExpenseContainer>
       ))}
+      <FooterContainer>
+        <Flex flexDirection={['row', 'column']} mt={[3, 0]} flexWrap="wrap" alignItems={['center', 'flex-end']}>
+          <Flex my={2} mr={[3, 0]} minWidth={100} justifyContent="flex-end" data-cy="transaction-amount">
+            <React.Fragment>
+              <FooterLabel color="black.500">
+                <FormattedMessage id="total" defaultMessage="TOTAL" />
+              </FooterLabel>
+              <FooterLabel color="black.500">
+                <FormattedMoneyAmount amount={totalAmount} currency={collective?.currency} precision={2} />
+              </FooterLabel>
+            </React.Fragment>
+          </Flex>
+        </Flex>
+      </FooterContainer>
     </StyledCard>
   );
 };
